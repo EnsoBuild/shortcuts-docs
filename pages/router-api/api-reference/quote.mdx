@@ -6,27 +6,25 @@ The quote endpoint is a fast way to get the amount of tokenOut that will be rece
 
 ### Request
 
-| Query Param   | Description                                                                                                                         | Example                      |
-| ------------- | ----------------------------------------------------------------------------------------------------------------------------------- | ---------------------------- |
-| `fromAddress` | Ethereum address of the wallet to send the transaction from (It could be an EoA, or a Smart Wallet)                                 | tokenIn=0x6b175474e8909...   |
-| `tokenIn`     | Ethereum address of the token to swap or enter into a position from                                                                 | tokenIn=0x6b175474e8909...   |
-| `amountIn`    | Amount of tokenIn to swap in wei                                                                                                    | amountIn=100000000000        |
-| `tokenOut`    | Ethereum address of the token to swap or enter into a position to                                                                   | tokenOut=0x182b723a587...    |
-| `priceImpact` | Flag that indicates whether to calculate and return the price impact of the transaction                                             | priceImpact=true             |
-| `chainId`     | (Optional) The chainId of the network. Default value is 1 for Mainnet                                                               | chainId=1                    |
-| `fee`         | (Optional) Fee in basis points. Must be in range 0-100. If specified, this percentage of amountIn value will be sent to feeReceiver | fee=100 (1%)                 |
-| `feeReceiver` | (Optional) Ethereum address that will receive the collected fee amount if `fee` was provided.                                       | feeReceiver=0x220866B1A22... |
+| Query Param   | Description                                                                                                                         | Example                        |
+| ------------- | ----------------------------------------------------------------------------------------------------------------------------------- | ----------------------------   |
+| `fromAddress` | Ethereum address of the wallet to send the transaction from (It could be an EoA, or a Smart Wallet)                                 | fromAddress=0x6b175474e8909... |
+| `tokenIn`     | Ethereum address of the token to swap or enter into a position from                                                                 | tokenIn=0x6b175474e8909...     |
+| `amountIn`    | Amount of tokenIn to swap in wei                                                                                                    | amountIn=100000000000          |
+| `tokenOut`    | Ethereum address of the token to swap or enter into a position to                                                                   | tokenOut=0x182b723a587...      |
+| `chainId`     | (Optional) The chainId of the network. Default value is 1 for Mainnet                                                               | chainId=1                      |
+| `fee`         | (Optional) Fee in basis points. Must be in range 0-100. If specified, this percentage of amountIn value will be sent to feeReceiver | fee=100 (1%)                   |
+| `feeReceiver` | (Optional) Ethereum address that will receive the collected fee amount if `fee` was provided.                                       | feeReceiver=0x220866B1A22...   |
 
 ### Response
 
 It returns an object with the following parameters:
 
-| Field       | Description                                                                                                 |
-| ----------- | ----------------------------------------------------------------------------------------------------------- |
-| `amountOut` | Estimated amount out received                                                                               |
-| `route`     | The route of the transaction                                                                                |
-| `gas`       | An estimation on how much gas will be spent                                                                 |
-| `feeAmount` | An Array containting all the collected fee amounts for each amountIn input <br/>(Only if fee was provided). |
+| Field         | Description                                                                                                 |
+| ------------- | ----------------------------------------------------------------------------------------------------------- |
+| `amountOut`   | Estimated amount out received                                                                               |
+| `gas`         | An estimation on how much gas will be spent                                                                 |
+| `priceImpact` | Price impact in basis points, null if USD price not found                                                   |
 
 ### Examples
 
@@ -42,26 +40,10 @@ https://api.enso.finance/api/v1/shortcuts/quote?chainId=1&fromAddress=0xd8da6bf2
 
 #### Response:
 
-(Response route may differ)
-
 ```json
 {
 	"amountOut": "1001537694734262349",
-	"gas": {
-		"_hex": "0x04cb07",
-		"_isBigNumber": true
-	},
-	"route": [
-		{
-			"action": "router",
-			"protocol": "enso",
-			"tokenIn": ["0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"],
-			"tokenOut": ["0xae7ab96520de3a18e5e111b5eaab095312d7fe84"],
-			"positionInId": ["1:0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"],
-			"positionOutId": [
-				"1:0xae7ab96520de3a18e5e111b5eaab095312d7fe84:0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
-			]
-		}
-	]
+	"gas": "386224",
+	"priceImpact": 379
 }
 ```
