@@ -1,19 +1,27 @@
-import { Callout } from 'nextra/components'
-import Image from 'next/image'
-import gas from '../../assets/gas.png'
+import { Callout } from "nextra/components";
+import Image from "next/image";
+import gas from "../../assets/gas.png";
 
 ## What is the Bundle API?
 
-The Bundle API is a powerful tool within the ENSO API suite that lets developers pack several DeFi actions into one single transaction. This REST API is designed for simplicity and effectiveness.
+The Bundle API is a powerful tool within the Enso API suite that lets developers pack several DeFi actions into one single transaction. This REST API is designed for simplicity and effectiveness.
 With just one API call, you can trigger several operations, making your interaction with various DeFi simpler and cheaper.
 
-When first used, it automatically deploys a minimal smart wallet which is then used to execute the bundled transactions.
-The smart wallet can be controlled only by the user and is the execution context when doing transactions.
+The Bundle API excels in gas optimization. The more transactions you bundle, the more you can save on gas fees. This makes it an economical choice for users seeking to execute multiple operations efficiently in the DeFi space.
 
-Moreover, the Bundle API excels in gas optimization. The more transactions you bundle, the more you can save on gas fees. This makes it an economical choice for users seeking to execute multiple operations efficiently in the DeFi space.
+<Callout type="info" emoji="💡">
+  Only delegate call transactions are supported with Bundle API
+</Callout>
 
-From entering and exiting positions to performing multi-token swaps, the Bundle API can combine any number of these actions into a single transaction.
-This bundling mechanism works across a multitude of DeFi protocols, such as liquidity pools, lending platforms, automated market makers, yield optimizers, and more.
+### Seamless Multi-Protocol Bundling
+
+From entering and exiting positions to multi-token swaps, the Bundle API supports bundling across a wide range of DeFi protocols, including:
+
+- Liquidity pools
+- Lending platforms
+- Automated market makers (AMMs)
+- Yield optimizers
+- And more
 
 The Bundle API takes care of optimizing the execution sequence and estimating the gas costs for the bundled actions, providing users with a clear picture of the transaction before execution.
 
@@ -28,12 +36,13 @@ More transactions bundled together means more gas savings. The Bundle API is des
 ---
 
 <Callout type="info" emoji="💡">
-  Try it out:
+  Try out the bundle
 </Callout>
 
-👉 Run this curl request to see a live route response for entering a Curve Pool AND stEth position with ETH
+👉 Run this `curl` request to see a live route response for entering into a steCRV Curve pool and stETH position with ETH
 
 ```bash copy
+
 curl -X POST \
   -H 'Content-Type: application/json' \
   -H 'Authorization: Bearer 1e02632d-6feb-4a75-a157-documentation' \
@@ -57,14 +66,17 @@ curl -X POST \
       }
     }
   ]' \
-  'https://api.enso.finance/api/v1/shortcuts/bundle?chainId=1&fromAddress=0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045'
-
+  'https://api.enso.finance/api/v1/shortcuts/bundle?chainId=1&fromAddress=0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045&routingStrategy=delegate'
 ```
 
 👉 Or try it out in the [Swagger UI](https://api.enso.finance/api#/shortcuts/BundleController_bundleShortcutTransaction)
 
-Details:
-Let's say you want to go from Ether to the steCrv Curve pool. Also, you want to deposit the Curve LP into the Curve Gauge.
-In the route endpoint you would simply pass a tokenIn (Ether), the amount and the tokenOut (the Curve Gauge).
+#### Understanding the process
 
-Enso will take care to swap your token in to the required token (if needed), deposit the LP into the Curve Gauge and stake the LP tokens into the Curve Gauge.
+Suppose you want to enter the steCRV Curve pool and stETH with WETH.
+With the `bundle` endpoint, you only need to specify 2 actions:
+
+- `route` action from ETH to stETH
+- `route` action from ETH to steCRV Curve pool
+
+Enso will handle a swap with specified `tokenIn` to the required token (if needed), deposit the LP into the Curve Gauge and stake the LP tokens into the Curve Gauge.

@@ -1,3 +1,44 @@
 # Harvest
 
-Available in endpoint.  Docs coming soon...
+Harvest tokens/rewards (for example, harvest Curve Gauge rewards)
+
+| Argument         | Description                                                              | Example                   |
+| ---------------- | ------------------------------------------------------------------------ | ------------------------- |
+| `token`          | Address of token to receive                                              | token=0x3b175474e8909...  |
+| `primaryAddress` | Address of the smart contract to interact with. For example, Curve Gauge | primaryToken=100000000000 |
+
+## Example
+
+```js
+{
+    protocol: "curve-gauge",
+    action: "harvest",
+    args: {
+      token: "0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0",
+      primaryAddress: "0x182B723a58739a9c974cFDB385ceaDb237453c28"
+    },
+}
+```
+
+## Endpoints
+
+### POST [/api/v1/shortcuts/bundle](https://api.enso.finance/api#/shortcuts/BundleController_bundleShortcutTransaction)
+
+Harvest wstETH from steCRV Gauge
+
+```bash copy
+curl -X POST \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer 1e02632d-6feb-4a75-a157-documentation" \
+  --data '[
+    {
+      "protocol": "curve-gauge",
+      "action": "harvest",
+      "args": {
+        "token": "0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0",
+        "primaryAddress": "0x182B723a58739a9c974cFDB385ceaDb237453c28"
+      }
+    }
+  ]' \
+  "https://api.enso.finance/api/v1/shortcuts/bundle?chainId=1&fromAddress=0xd8da6bf26964af9d7eed9e03e53415d37aa96045&routingStrategy=delegate"
+```

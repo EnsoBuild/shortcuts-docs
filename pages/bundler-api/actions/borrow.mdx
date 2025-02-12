@@ -4,35 +4,35 @@ Borrow is the action for borrowing a specific asserts, after depositing into a l
 
 Arguments:
 | name | Description | Example |
-| ------- | ---------------    | -------------------------- |
+| ------- | --------------- | -------------------------- |
 | `collateral` | Address of the token to use as a collateral | collateral=0x3b175474e8909... |
 | `tokenOut` | Address of the token to borrow | tokenOut=0x6b175474e8909... |
-| `amountOut` | Raw amount to borrow | amountOut=100000000000 |
+| `amountOut` | Amount to borrow in wei| amountOut=100000000000 |
 | `primaryAddress` | Address of the lending pool | primaryAddress=0x7b175474e8909.. |
 
 ## Examples
 
 You can use the deposit action inside of the [bundle endpoint](../api-reference/bundle).
 
-```
+```js
 {
     protocol: "aave-v3",
+    action: "borrow",
     args: {
         collateral: weth,
         tokenOut: usdc,
         amountIn: wethAmount
         primaryAddress: aaveLendingPool
     },
-    action: "borrow",
 },
 ```
 
 ### Deposit ETH -> borrow USDC
+
 In this example we are depositing 1 ETH into the Aave lending pool and borrowing 1000 USDC.
 
 Note: The user smart wallet will hold aWeth and the borrowed USDC, if you want to send the tokens to another address you can append a transfer action.
 Since ETH is the token in, we won't need to approve the spending.
-
 
 ```bash copy
 curl -X POST \
@@ -60,24 +60,27 @@ curl -X POST \
     }
   }
 ]' \
-"https://api.enso.finance/api/v1/shortcuts/bundle?chainId=1&fromAddress=0xd8da6bf26964af9d7eed9e03e53415d37aa96045"
+"https://api.enso.finance/api/v1/shortcuts/bundle?chainId=1&fromAddress=0xd8da6bf26964af9d7eed9e03e53415d37aa96045&routingStrategy=delegate"
 ```
 
 [Here](https://www.tdly.co/shared/simulation/ca163c5f-c154-40af-8e66-508710e3b518) you can inspect a simulation of the above transaction.
 
 For convinience, you can also use the [route](./route.mdx) action instead of deposit, it's useful when you want to swap the token in for the token out and deposit it into the lending pool.
 
-```
- {
-      "protocol": "enso",
-      "action": "route",
-      "args": {
-        "tokenIn": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
-        "tokenOut": "0x4d5F47FA6A74757f35C14fD3a6Ef8E3C9BC514E8",
-        "amountIn": "1000000000000000000"
-        "slippage": 300
-      }
-      ...borrow
+```js
+[
+  {
+        "protocol": "enso",
+        "action": "route",
+        "args": {
+          "tokenIn": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+          "tokenOut": "0x4d5F47FA6A74757f35C14fD3a6Ef8E3C9BC514E8",
+          "amountIn": "1000000000000000000"
+          "slippage": 300
+        }
+  },
+  ...borrow
+]
 ```
 
 ### Deposit WETH -> borrow USDC
@@ -91,7 +94,7 @@ curl -X GET \
   "https://api.enso.finance/api/v1/wallet?chainId=1&fromAddress=0xd8da6bf26964af9d7eed9e03e53415d37aa96045"
 ```
 
-Using ethers or your favourite web3 library, you can approve the WETH spending. 
+Using Ethers/Viem, you can approve the WETH spending.
 You can also get the calldata using the approve [action](./approve.mdx).
 
 After the spending is approved you can get the bundled deposit and borrow:
@@ -122,5 +125,5 @@ curl -X POST \
     }
   }
 ]' \
-"https://api.enso.finance/api/v1/shortcuts/bundle?chainId=1&fromAddress=0xd8da6bf26964af9d7eed9e03e53415d37aa96045"
+"https://api.enso.finance/api/v1/shortcuts/bundle?chainId=1&fromAddress=0xd8da6bf26964af9d7eed9e03e53415d37aa96045&routingStrategy=delegate"
 ```

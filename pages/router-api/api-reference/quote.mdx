@@ -1,17 +1,17 @@
 ## GET /v1/shortcuts/quote
 
-If the EoA doesn't hold enough funds or allowance to execute the transaction, the route endpoint won't be able to calculate the best route.
+If the EOA lacks sufficient funds or allowances to execute a transaction, the route endpoint cannot determine the optimal path.
 
-The quote endpoint is a fast way to get the amount of tokenOut that will be received, without the need of holding the funds or allowance.
+The `/quote` endpoint provides a quick estimate of the `tokenOut` amount that will be received without requiring the user to hold the funds or set allowances.
 
 ### Request
 
 | Query Param   | Description                                                                                                                         | Example                      |
 | ------------- | ----------------------------------------------------------------------------------------------------------------------------------- | ---------------------------- |
 | `fromAddress` | Ethereum address of the wallet to send the transaction from (It could be an EoA, or a Smart Wallet)                                 | tokenIn=0x6b175474e8909...   |
-| `tokenIn`     | Ethereum address of the token to swap or enter into a position from                                                                 | tokenIn=0x6b175474e8909...   |
-| `amountIn`    | Amount of tokenIn to swap in wei                                                                                                    | amountIn=100000000000        |
-| `tokenOut`    | Ethereum address of the token to swap or enter into a position to                                                                   | tokenOut=0x182b723a587...    |
+| `tokenIn`     | Ethereum address of the token to swap or use for entering a position                                                                | tokenIn=0x6b175474e8909...   |
+| `amountIn`    | Amount of `tokenIn` to swap in wei                                                                                                  | amountIn=100000000000        |
+| `tokenOut`    | Ethereum address of the token to receive                                                                                            | tokenOut=0x182b723a587...    |
 | `priceImpact` | Flag that indicates whether to calculate and return the price impact of the transaction                                             | priceImpact=true             |
 | `chainId`     | (Optional) The chainId of the network. Default value is 1 for Mainnet                                                               | chainId=1                    |
 | `fee`         | (Optional) Fee in basis points. Must be in range 0-100. If specified, this percentage of amountIn value will be sent to feeReceiver | fee=100 (1%)                 |
@@ -19,14 +19,14 @@ The quote endpoint is a fast way to get the amount of tokenOut that will be rece
 
 ### Response
 
-It returns an object with the following parameters:
+Returns an object with the following parameters:
 
-| Field       | Description                                                                                                 |
-| ----------- | ----------------------------------------------------------------------------------------------------------- |
-| `amountOut` | Estimated amount out received                                                                               |
-| `route`     | The route of the transaction                                                                                |
-| `gas`       | An estimation on how much gas will be spent                                                                 |
-| `feeAmount` | An Array containting all the collected fee amounts for each amountIn input <br/>(Only if fee was provided). |
+| Field         | Description                                                                                                 |
+| ------------- | ----------------------------------------------------------------------------------------------------------- |
+| `gas`         | An estimation on how much gas will be spent                                                                 |
+| `amountOut`   | Estimated amount out received                                                                               |
+| `feeAmount`   | An Array containting all the collected fee amounts for each amountIn input <br/>(Only if fee was provided). |
+| `priceImpact` | (Optional) Price impact of the transaction                                                                  |
 
 ### Examples
 
@@ -36,32 +36,12 @@ Get a quote for spending 1 ETH for stEth
 
 #### Request:
 
-```url
-https://api.enso.finance/api/v1/shortcuts/quote?chainId=1&fromAddress=0xd8da6bf26964af9d7eed9e03e53415d37aa96045&tokenIn=0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee&tokenOut=0xae7ab96520de3a18e5e111b5eaab095312d7fe84&amountIn=1000000000000000000
+```bash copy
+curl "https://api.enso.finance/api/v1/shortcuts/quote?chainId=1&fromAddress=0xd8da6bf26964af9d7eed9e03e53415d37aa96045&tokenIn=0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee&tokenOut=0xae7ab96520de3a18e5e111b5eaab095312d7fe84&amountIn=1000000000000000000&apikey=1e02632d-6feb-4a75-a157-documentation"
 ```
 
 #### Response:
 
-(Response route may differ)
-
 ```json
-{
-	"amountOut": "1001537694734262349",
-	"gas": {
-		"_hex": "0x04cb07",
-		"_isBigNumber": true
-	},
-	"route": [
-		{
-			"action": "router",
-			"protocol": "enso",
-			"tokenIn": ["0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"],
-			"tokenOut": ["0xae7ab96520de3a18e5e111b5eaab095312d7fe84"],
-			"positionInId": ["1:0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"],
-			"positionOutId": [
-				"1:0xae7ab96520de3a18e5e111b5eaab095312d7fe84:0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
-			]
-		}
-	]
-}
+{ "gas": "365895", "amountOut": "1000481280900017222", "priceImpact": 0 }
 ```
