@@ -1,21 +1,29 @@
-import { Callout } from 'nextra/components'
-import Image from 'next/image'
-import gas from '../../assets/gas.png'
+import { Callout } from "nextra/components";
+import Image from "next/image";
+import gas from "../../assets/gas.png";
 
 ## What is the Bundle API?
 
-The Bundle API is a powerful tool within the ENSO API suite that lets developers pack several DeFi actions into one single transaction. This REST API is designed for simplicity and effectiveness.
+The Bundle API is a powerful tool within the Enso API suite that lets developers pack several DeFi actions into one single transaction. This REST API is designed for simplicity and effectiveness.
 With just one API call, you can trigger several operations, making your interaction with various DeFi simpler and cheaper.
 
-When first used, it automatically deploys a minimal smart wallet which is then used to execute the bundled transactions.
-The smart wallet can be controlled only by the user and is the execution context when doing transactions.
+The Bundle API excels in gas optimization. The more transactions you bundle, the more you can save on gas fees. This makes it an economical choice for users seeking to execute multiple operations efficiently in the DeFi space.
 
-Moreover, the Bundle API excels in gas optimization. The more transactions you bundle, the more you can save on gas fees. This makes it an economical choice for users seeking to execute multiple operations efficiently in the DeFi space.
+### Seamless Multi-Protocol Bundling
 
-From entering and exiting positions to performing multi-token swaps, the Bundle API can combine any number of these actions into a single transaction.
-This bundling mechanism works across a multitude of DeFi protocols, such as liquidity pools, lending platforms, automated market makers, yield optimizers, and more.
+From entering and exiting positions to multi-token swaps, the Bundle API supports bundling across a wide range of DeFi protocols, including:
+
+- Liquidity pools
+- Lending platforms
+- Automated market makers (AMMs)
+- Yield optimizers
+- And more
 
 The Bundle API takes care of optimizing the execution sequence and estimating the gas costs for the bundled actions, providing users with a clear picture of the transaction before execution.
+
+<Callout type="info" emoji="💡">
+  Only delegate call transactions are supported with Bundle API
+</Callout>
 
 ## Gas Savings
 
