@@ -53,13 +53,13 @@ curl -X POST \
   --data '[
   {
     "action": "deposit",
+    "protocol": "balancer-v2",
     "args": {
       "tokenIn": "0xba100000625a3754423978a60c9317c58a424e3d",
       "tokenOut": "0x5c6Ee304399DBdB9C8Ef030aB642B10820DB8F56",
       "amountIn": "1000000000000000000",
-      "primaryAddress": "0xba12222222228d8ba445958a75a0704d566bf2c8",
-    },
-    "protocol": "balancer-v2"
+      "primaryAddress": "0xba12222222228d8ba445958a75a0704d566bf2c8"
+    }
   }]' \
   "https://api.enso.finance/api/v1/shortcuts/bundle?chainId=1&fromAddress=0xd8da6bf26964af9d7eed9e03e53415d37aa96045&routingStrategy=delegate"
 ```
