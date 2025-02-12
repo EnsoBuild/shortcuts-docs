@@ -14,10 +14,10 @@ You can use the route action:
 2. Or in a [bundle of calls](../../bundler-api/introduction.mdx)
 
 ```javascript
-tokenIn: 'Address of token to send'
-tokenOut: 'Address of token to receive'
-amountIn: 'Raw amount to send'
-slippage: 'Amount of slippage'
+tokenIn: "Address of token to send";
+tokenOut: "Address of token to receive";
+amountIn: "Raw amount to send";
+slippage: "Amount of slippage";
 ```
 
 ## Example
@@ -43,8 +43,6 @@ curl -X POST \
         "tokenIn": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
         "tokenOut": "0xae7ab96520de3a18e5e111b5eaab095312d7fe84",
         "amountIn": "1000000000"
-        "slippage": 300
-
       }
     },
     {
@@ -52,12 +50,10 @@ curl -X POST \
       "action": "route",
       "args": {
         "tokenIn": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
-        "tokenOut": "0x06325440d014e39736583c165c2963ba99faf14e",
+        "tokenOut": "0x06325440D014e39736583c165C2963BA99fAf14E",
         "amountIn": "1000000000"
-
       }
     }
   ]' \
-  'https://api.enso.finance/api/v1/shortcuts/bundle?chainId=1&fromAddress=0xd8da6bf26964af9d7eed9e03e53415d37aa96045'
-
+  'https://api.enso.finance/api/v1/shortcuts/bundle?chainId=1&fromAddress=0xd8da6bf26964af9d7eed9e03e53415d37aa96045&routingStrategy=delegate'
 ```

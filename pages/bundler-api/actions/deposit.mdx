@@ -1,3 +1,5 @@
+import { Callout } from "nextra/components";
+
 # Deposit
 
 Depositing is the action for taking funds from the callers wallet into a particular protocol.
@@ -5,16 +7,19 @@ Depositing is the action for taking funds from the callers wallet into a particu
 1. For many cases you can directly use the [route endpoint](./route.md) to enter into a position than directly using the deposit action. The route endpoint will determine the best price and gas router for either depositing directly into the protocol, or buying the position token on a secondary market.
 2. If you are depositing into a protocol you must have the underlying token required for the deposit action. For example if you are attempting to deposit into a Yearn vault that requires WETH and you define DAI as the tokenIn then the transaction will fail. This is a perfect use case for using the [route](./route.md) endpoint.
 
-NOTE: Direct deposit actions doesn't have slippage protection. If you are interacting with a protocol that needs slippage protection use the [route endpoint](./route.md)
+<Callout type="info" emoji="💡">
+  Direct deposit actions **do not have slippage protection**. If you are
+  interacting with a protocol that needs slippage protection use the [route
+  endpoint](./route.md)
+</Callout>
 
-| Argument | Description | Example |
-| -------- | ----------- | ------- |
-| `tokenIn` | Address of token to send. You can define many tokens in by [inToken1, inToken2] | tokenIn=0x3b175474e8909... |
-| `amountIn` | Raw amount to send. You can define many tokens out by [outToken1, outToken2] | amountIn=100000000000 |
-| `tokenOut` | Address of token to receive | tokenOut=0x6b175474e8909... |
-| `primaryAddress` | Address of smart contract to interact with e.g. Balancer Vault | primaryAddress=0x7b175474e8909.. |
-| `recipient` | Address of the receiver. Optional - if you want to send the tokens to a different address than the smart wallet | recipient=0x8b175474e8909... |
-
+| Argument         | Description                                                                                                    | Example                          |
+| ---------------- | -------------------------------------------------------------------------------------------------------------- | -------------------------------- |
+| `tokenIn`        | Address of token to send. You can define many tokens in by `[inToken1, inToken2]`                              | tokenIn=0x3b175474e8909...       |
+| `amountIn`       | Amount to send in wei.                                                                                         | amountIn=100000000000            |
+| `tokenOut`       | Address of token to receive. You can define many tokens out by `[outToken1, outToken2]`                        | tokenOut=0x6b175474e8909...      |
+| `primaryAddress` | Address of smart contract to interact with e.g. Balancer Vault                                                 | primaryAddress=0x7b175474e8909.. |
+| `recipient`      | (Optional) Address of the receiver if you want to send the tokens to a different address than the smart wallet | recipient=0x8b175474e8909...     |
 
 ## Example
 
@@ -22,7 +27,7 @@ With Enso you can simply use Deposit for all protocols resulting in quick, and e
 
 You can use the deposit action inside of the [bundle endpoint](../api-reference/bundle).
 
-```
+```js
 {
     protocol: "balancer-v2",
     args: {
@@ -37,9 +42,9 @@ You can use the deposit action inside of the [bundle endpoint](../api-reference/
 
 ## Endpoints
 
-
 ### POST [/api/v1/shortcuts/bundle](https://api.enso.finance/api#/shortcuts/BundleController_bundleShortcutTransaction)
 
+Deposit 1 BAL into Balancer 80 BAL 20 WETH
 
 ```bash copy
 curl -X POST \
@@ -56,5 +61,5 @@ curl -X POST \
     },
     "protocol": "balancer-v2"
   }]' \
-  "https://api.enso.finance/api/v1/shortcuts/bundle?chainId=1&fromAddress=0xd8da6bf26964af9d7eed9e03e53415d37aa96045"
+  "https://api.enso.finance/api/v1/shortcuts/bundle?chainId=1&fromAddress=0xd8da6bf26964af9d7eed9e03e53415d37aa96045&routingStrategy=delegate"
 ```

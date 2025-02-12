@@ -4,10 +4,10 @@ Approve an address to spend tokens
 
 Arguments:
 | name | Description | Example |
-| ------- | ---------------    | -------------------------- |
+| ------- | --------------- | -------------------------- |
 | `token` | Address of the token to approve | token=0x6b175474e8909... |
 | `spender` | Address of the spender | spender=0x6b175474e8909... |
-| `amount` | Raw amount to approve | amount=100000000000 |
+| `amount` | Amount to approve in wei| amount=100000000000 |
 
 ## Example
 
@@ -17,7 +17,7 @@ Body:
 [
   {
     "action": "approve",
-    "protocol": "enso",
+    "protocol": "erc20",
     "args": {
       "token": "0xd26114cd6EE289AccF82350c8d8487fedB8A0C07",
       "spender": "0x80eba3855878739f4710233a8a19d89bdd2ffb8e",
@@ -36,13 +36,12 @@ curl -X POST \
   --data '[
   {
     "action": "approve",
+    "protocol": "erc20",
     "args": {
       "token": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
       "spender": "0xe592427a0aece92de3edee1f18e0157c05861564",
       "amount": "1000000000000000000000000"
-    },
-    "protocol": "enso"
+    }
   }]' \
-  "https://api.enso.finance/api/v1/shortcuts/bundle?chainId=1&fromAddress=0xd8da6bf26964af9d7eed9e03e53415d37aa96045"
+  "https://api.enso.finance/api/v1/shortcuts/bundle?chainId=1&fromAddress=0xd8da6bf26964af9d7eed9e03e53415d37aa96045&routingStrategy=delegate"
 ```
-

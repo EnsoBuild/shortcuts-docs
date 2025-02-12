@@ -4,13 +4,14 @@ TransferFrom one or more tokens to a specific address.
 
 Arguments:
 | name | Description | Example |
-| ------- | ---------------    | -------------------------- |
+| ------- | --------------- | -------------------------- |
 | `token` | Address of the token | token=0x6b175474e8909... |
 | `sender` | Address of the sender | sender=0x6b175474e8909... |
-| `recipient` | Address of the recipient | recipient=0x6b175474e8909... |
-| `amount` | Raw amount to transfer | amount=100000000000 |
+| `receiver` | Address of the recipient | receiver=0x6b175474e8909... |
+| `amount` | Amount to transfer in wei | amount=100000000000 |
 
 Note: Spender must have approved the amount to be transferred.
+
 ## Example
 
 Body:
@@ -18,10 +19,11 @@ Body:
 ```json
 [
   {
-    "action": "transferFrom",
+    "protocol": "erc20",
+    "action": "transferfrom",
     "args": {
       "token": "0xd26114cd6EE289AccF82350c8d8487fedB8A0C07",
-      "recipient": "0x93621DCA56fE26Cdee86e4F6B18E116e9758Ff11",
+      "receiver": "0x93621DCA56fE26Cdee86e4F6B18E116e9758Ff11",
       "sender": "0xd8da6bf26964af9d7eed9e03e53415d37aa96045",
       "amount": "1000000000000000000000000"
     }
@@ -34,19 +36,18 @@ Curl:
 ```bash copy
 curl -X 'POST' \
   'https://api.enso.finance/api/v1/shortcuts/bundle?chainId=1&fromAddress=0xd8da6bf26964af9d7eed9e03e53415d37aa96045' \
-  -H 'accept: */*' \
+  -H "Authorization: Bearer 1e02632d-6feb-4a75-a157-documentation" \
   -H 'Content-Type: application/json' \
   -d '[
   {
-    "protocol": "enso",
-    "action": "transferFrom",
+    "protocol": "erc20",
+    "action": "transferfrom",
     "args":  {
       "token": "0xd26114cd6EE289AccF82350c8d8487fedB8A0C07",
-      "recipient": "0x93621DCA56fE26Cdee86e4F6B18E116e9758Ff11",
+      "receiver": "0x93621DCA56fE26Cdee86e4F6B18E116e9758Ff11",
       "sender": "0xd8da6bf26964af9d7eed9e03e53415d37aa96045",
       "amount": "1000000000000000000000000"
     }
   }
 ]'
 ```
-

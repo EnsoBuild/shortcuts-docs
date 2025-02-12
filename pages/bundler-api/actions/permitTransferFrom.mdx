@@ -5,12 +5,14 @@ A permit signature needs to be generated offchain and passed to the API.
 
 Arguments:
 | name | Description | Example |
-| ------- | ---------------    | -------------------------- |
-| `token` | Address of the token to approve | token=0x6b175474e8909... |
+| ------- | --------------- | -------------------------- |
+| `token` | Address of the token to transfer | token=0x6b175474e8909... |
+| `amount` | Amount to transfer in wei| amount=100000000000 |
+| `sender` | Address of sender| sender=0x6b175474e8909...|
+| `receiver` | Address of receiver| receiver=0x6b175474e8909...|
 | `nonce` | The nonce to prevent signature replays | nonce=1 |
 | `deadline` | The deadline on the permit signature | deadline=1710150268|
-| `signature` | The permit signature|  |
-| `amount` | Raw amount to transfer | amount=100000000000 |
+| `signature` | The permit signature| |
 
 ## Example
 
@@ -19,15 +21,17 @@ Body:
 ```json
 [
   {
-    "action": "permitTransferFrom",
+    "action": "permittransferfrom",
+    "protocol": "permit2",
     "args": {
       "token": "0xd26114cd6EE289AccF82350c8d8487fedB8A0C07",
+      "amount": "1000000000000000000000000",
+      "sender": "0xb67f3CE46bB9E1a1127796c27f38DbaB9f643ec0",
+      "receiver": "0x35a2839b617F7da6534d636f22945f6Cb6137130",
       "nonce": "1",
       "deadline": "1710150268",
-      "signature": "0x..",
-      "amount": "1000000000000000000000000"
+      "signature": "0x.."
     }
   }
 ]
 ```
-

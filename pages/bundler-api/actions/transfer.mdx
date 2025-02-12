@@ -4,11 +4,10 @@ Transfer one or more tokens to a specific address.
 
 Arguments:
 | name | Description | Example |
-| ------- | ---------------    | -------------------------- |
+| ------- | --------------- | -------------------------- |
 | `token` | Address of the token | token=0x6b175474e8909... |
-| `recipient` | Address of the recipient | recipient=0x6b175474e8909... |
+| `receiver` | Address of the recipient | receiver=0x6b175474e8909... |
 | `amount` | Raw amount to transfer | amount=100000000000 |
-
 
 ## Example
 
@@ -20,7 +19,7 @@ Body:
     "action": "transfer",
     "args": {
       "token": "0xd26114cd6EE289AccF82350c8d8487fedB8A0C07",
-      "recipient": "0xd8da6bf26964af9d7eed9e03e53415d37aa96045",
+      "receiver": "0xd8da6bf26964af9d7eed9e03e53415d37aa96045",
       "amount": "1000000000000000000000000"
     }
   }
@@ -31,19 +30,18 @@ Curl:
 
 ```bash copy
 curl -X 'POST' \
-  'https://api.enso.finance/api/v1/shortcuts/bundle?chainId=1&fromAddress=0xd8da6bf26964af9d7eed9e03e53415d37aa96045' \
-  -H 'accept: */*' \
+  'https://api.enso.finance/api/v1/shortcuts/bundle?chainId=1&fromAddress=0xd8da6bf26964af9d7eed9e03e53415d37aa96045&routingStrategy=delegate' \
+  -H "Authorization: Bearer 1e02632d-6feb-4a75-a157-documentation" \
   -H 'Content-Type: application/json' \
   -d '[
   {
-    "protocol": "enso",
+    "protocol": "erc20",
     "action": "transfer",
     "args":  {
       "token": "0xd26114cd6EE289AccF82350c8d8487fedB8A0C07",
-      "recipient": "0x80eba3855878739f4710233a8a19d89bdd2ffb8e",
+      "receiver": "0x80eba3855878739f4710233a8a19d89bdd2ffb8e",
       "amount": "1000000000000000000000000"
     }
   }
 ]'
 ```
-

@@ -39,9 +39,10 @@ More transactions bundled together means more gas savings. The Bundle API is des
   Try out the bundle
 </Callout>
 
-👉 Run this `curl` request to see a live route response for swapping ETH to USDC and supplying USDC into Aave V3
+👉 Run this `curl` request to see a live route response for entering into a steCRV Curve pool and stETH position with ETH
 
 ```bash copy
+
 curl -X POST \
   -H 'Content-Type: application/json' \
   -H 'Authorization: Bearer 1e02632d-6feb-4a75-a157-documentation' \
@@ -51,35 +52,31 @@ curl -X POST \
       "action": "route",
       "args": {
         "tokenIn": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
-        "tokenOut": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+        "tokenOut": "0xae7ab96520de3a18e5e111b5eaab095312d7fe84",
         "amountIn": "1000000000"
       }
     },
     {
-      "protocol": "aave-v3",
-      "action": "deposit",
+      "protocol": "enso",
+      "action": "route",
       "args": {
-        "tokenIn": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
-        "tokenOut": "0xbcca60bb61934080951369a648fb03df4f96263c",
-        "amountIn": { "useOutputOfCallAt": 0 },
-        "primaryAddress": "0x87870Bca3F3fD6335C3F4ce8392D69350B4fA4E2"
+        "tokenIn": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "tokenOut": "0x06325440d014e39736583c165c2963ba99faf14e",
+        "amountIn": "1000000000"
       }
     }
   ]' \
-  'https://api.enso.finance/api/v1/shortcuts/bundle?chainId=1&fromAddress=0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045'
+  'https://api.enso.finance/api/v1/shortcuts/bundle?chainId=1&fromAddress=0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045&routingStrategy=delegate'
 ```
 
 👉 Or try it out in the [Swagger UI](https://api.enso.finance/api#/shortcuts/BundleController_bundleShortcutTransaction)
 
-#### Details
+#### Understanding the process
 
-Suppose you want to supply USDC into Aave V3, but you only have ETH.
-To achieve this, use the `bundle` endpoint and provide:
+Suppose you want to enter the steCRV Curve pool and stETH with WETH.
+With the `bundle` endpoint, you only need to specify 2 actions:
 
-- `route` action that swaps ETH to USDC
-- `aave-v3 deposit` action that supplies the USDC into Aave V3
+- `route` action from ETH to stETH
+- `route` action from ETH to steCRV Curve pool
 
-Enso will handle the entire process:
-
-- Swapping ETH for the required token
-- Supplying token into Aave V3
+Enso will handle a swap with specified `tokenIn` to the required token (if needed), deposit the LP into the Curve Gauge and stake the LP tokens into the Curve Gauge.
