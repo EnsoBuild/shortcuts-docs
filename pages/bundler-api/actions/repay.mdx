@@ -1,3 +1,50 @@
 # Repay
 
-Available in endpoint.  Docs coming soon...
+Repaying is the action of returning borrowed funds to a protocol, typically to reduce or eliminate a debt position. This action is crucial for managing liabilities and maintaining a healthy financial position within decentralized finance (DeFi) protocols.
+
+| Argument         | Description                                                                    | Example                     |
+| ---------------- | ------------------------------------------------------------------------------ | --------------------------- |
+| `tokenIn`        | Address of token to repay                                                      | tokenIn=0x3b175474e8909...  |
+| `amountIn`       | Amount to repay in wei                                                         | amountIn=10000000000        |
+| `primaryAddress` | Address of the protocol's smart contract to interact with (e.g., Aave V3 Pool) | amountIn=0x3b175474e8909... |
+
+## Example
+
+The following example demonstrates how to repay 100 USDT to the Aave V3 lending pool:
+
+```js
+{
+    protocol: "aave-v3",
+    action: "repay",
+    args: {
+        tokenIn: usdt,
+        amountIn: usdtAmount
+        primaryAddress: pool
+    },
+},
+```
+
+## Endpoints
+
+### POST [/api/v1/shortcuts/bundle](https://api.enso.finance/api#/shortcuts/BundleController_bundleShortcutTransaction)
+
+Repay 100 USDT on Aave V3
+
+```bash copy
+curl -X POST \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer 1e02632d-6feb-4a75-a157-documentation" \
+  --data '[
+    {
+      "protocol": "aave-v3",
+      "action": "repay",
+      "args": {
+          "tokenIn": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+          "amountIn": "100000000",
+          "primaryAddress": "0x87870bca3f3fd6335c3f4ce8392d69350b4fa4e2"
+      }
+    }
+  ]' \
+  "https://api.enso.finance/api/v1/shortcuts/bundle?chainId=1&fromAddress=0xd8da6bf26964af9d7eed9e03e53415d37aa96045&routingStrategy=delegate"
+```
+
