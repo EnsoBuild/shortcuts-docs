@@ -1,3 +1,27 @@
-# Redeem 
+# Redeem
 
-Available in endpoint.  Docs coming soon...
+Redeeming is the action of withdrawing underlying assets from a protocol (e.g., a vault or liquidity pool) by exchanging shares or tokens. This action is commonly used to exit a position and retrieve the desired tokens.
+
+| Argument         | Description                                                                                                    | Example                          |
+| ---------------- | -------------------------------------------------------------------------------------------------------------- | -------------------------------- |
+| `tokenIn`        | (Optional) Address of token to send                                                                            | tokenIn=0x3b175474e8909...       |
+| `tokenOut`       | Address of token to receive. You can define many tokens out by `[outToken1, outToken2]`                        | tokenOut=0x6b175474e8909...      |
+| `amountIn`       | Amount to deposit in wei (e.g. ERC4626 shares)                                                                 | amountIn=100000000000            |
+| `primaryAddress` | Address of smart contract to interact with (e.g. ERC4626 Vault)                                                | primaryAddress=0x7b175474e8909.. |
+| `recipient`      | (Optional) Address of the receiver if you want to send the tokens to a different address than the smart wallet | recipient=0x8b175474e8909...     |
+
+## Example
+
+```js
+{
+    protocol: "erc4626",
+    action: "redeem",
+    args: {
+        tokenOut: usdt,
+        amountIn: shares,
+        primaryAddress: erc4626Address,
+    },
+},
+
+```
+
