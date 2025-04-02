@@ -4,5 +4,6 @@
   "wallet": "Wallet",
   "protocols": "Protocols",
   "standards": "Standards",
-  "actions": "Actions"
+  "actions": "Actions",
+  "nontokenized": "Nontokenized Positions"
 }
