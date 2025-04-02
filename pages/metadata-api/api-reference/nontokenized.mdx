@@ -1,0 +1,69 @@
+# Tokens
+
+## GET /v1/nontokenized
+
+Get the list of Enso supported non-tokenized positions across supported chains.
+
+Non-tokenized positions are DeFi positions that do not issue ERC20 tokens, such as staking vaults, reward farms, or vaults where shares are not transferable.
+They are used in routing via the [/route/nontokenized](/router-api/api-reference/nontokenized) endpoint.
+
+This endpoint includes defi tokens and base, swappable tokens.
+For more details, see the [position types](/concepts).
+
+#### Example:
+
+```bash copy
+curl -X 'GET' \
+  'https://api.enso.finance/api/v1/nontokenized?chainId=80094&page=1' \
+  -H 'accept: */*'
+```
+
+👉 Try it on [swagger](https://api.enso.finance/api#/metadata/NonTokenizedController_tokens)
+
+#### Optional Query Parameters:
+
+| Query Param     | Description                                                                          |
+| --------------- | ------------------------------------------------------------------------------------ |
+| `chainId`       | The chainId of the positions to return                                               |
+| `project`       | The overarching project associated with the positions, e.g. `beradrome`              |
+| `protocolSlug`  | Protocol slug of the nontokenized position, e.g. `bex-vaults`, `beradrome-farms`     |
+| `address`       | Address of the nontokenized position                                                 |
+| `primayAddress` | Contract entrypoint for this positions/token. It can be used in the bundler endpoint |
+| `page`          | Page, used for pagination                                                            |
+
+#### Response example:
+
+```json
+{
+  "data": [
+    {
+      "chainId": 80094,
+      "address": "0x0AB1f3949cebB19FDebC5934d1822EA9ca24aE6F",
+      "primaryAddress": "0x0ab1f3949cebb19fdebc5934d1822ea9ca24ae6f",
+      "protocol": "beradrome-farms",
+      "underlyingTokens": [
+        {
+          "chainId": 80094,
+          "address": "0xac03CABA51e17c86c921E1f6CBFBdC91F8BB2E6b",
+          "type": "base",
+          "decimals": 18,
+          "name": "Infrared BGT",
+          "symbol": "IBGT",
+          "logosUri": [
+            "https://assets.coingecko.com/coins/images/54614/thumb/ibgt.jpg?1740718302"
+          ]
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "total": 1,
+    "lastPage": 1,
+    "currentPage": null,
+    "perPage": 1000,
+    "prev": null,
+    "next": null,
+    "cursor": 42
+  }
+}
+```
