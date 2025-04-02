@@ -1,0 +1,98 @@
+import { Callout } from "nextra-theme-docs";
+
+## GET /v1/shortcuts/route/nontokenized
+
+Use this endpoint to calculate the optimal route to enter a non-tokenized DeFi position using any ERC20 or native token. The API analyzes various protocols to determine the best conversion route into the underlying assets of the desired non-tokenized vault.
+
+The response includes:
+
+- A transaction object (`tx`), ready for submission to blockchain.
+- Simulation data like estimated gas, amount out, and the routing path.
+
+<Callout type="info" emoji="ℹ️">
+  If `tokenIn` is not native token of the blockchain (ETH), ensure the necessary
+  allowances are set.
+</Callout>
+
+<Callout type="warning" emoji="ℹ️">
+  At the moment, only deposits into positions are supported
+</Callout>
+
+### Request
+
+| Query Param       | Description                                                                               | Example                      |
+| ----------------- | ----------------------------------------------------------------------------------------- | ---------------------------- |
+| `fromAddress`     | Ethereum address initiating the transaction                                               | fromAddress=0xd8da6bf2...    |
+| `receiver`        | Ethereum address of the receiver of the position                                          | receiver=0xd8da6bf2...       |
+| `tokenIn`         | Ethereum address of the token to swap or enter into a position from                       | tokenIn=0x6b175474e8909...   |
+| `amountIn`        | Input amount in wei                                                                       | amountIn=100000000000        |
+| `positionOut`     | Address of nontokenized position to deposit into                                          | tokenOut= 0x182b723a587...   |
+| `routingStrategy` | Strategy: `router`, `delegate` or `ensowallet`                                            | routingStrategy=router       |
+| `chainId`         | The chainId of the network.                                                               | chainId=1                    |
+| `spender`         | (Optional) Ethereum address of the spender of the `tokenIn`. Default = `fromAddress`      | spender=0xd8da6bf2...        |
+| `slippage`        | (Optional) Slippage in basis points. Default value is 50 (0.5%)                           | slippage=100 (1%)            |
+| `fee`             | (Optional) Fee in basis points. Must be in range 0-100. Value is deducted from `amountIn` | fee=100 (1%)                 |
+| `feeReceiver`     | (Optional) Address to receive the deducted fee                                            | feeReceiver=0x220866B1A22... |
+
+<Callout type="warning" emoji="⚠️">
+  For BEX vaults, you must use the `delegate` routing strategy.
+</Callout>
+
+### Response
+
+Returns an object.
+The `tx` object contains transaction details to use for transaction execution in Ethers/Viem. The other fields are a result of a transaction simulation.
+
+| Field       | Description                                                                                                                                 |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| `route`     | An Array of objects containing: <br/> `tokenIn` <br/> `positionInId` <br/> `tokenOut` <br/> `positionOutId` <br/> `protocol` <br/> `action` |
+| `gas`       | Estimated gas used by the transaction. Since it's an estimation, it is usually good practice to increase it by <strong>50%</strong>         |
+| `amountOut` | Estimated shares of the nontokenized position received                                                                                      |
+| `tx`        | The `tx` object to use in Ethers/Viem. Contains sub-parameters: <br/> -`data`<br/> -`to` <br/>-`from` <br/>-`value`                         |
+| `feeAmount` | An Array containting all the collected fee amounts for each amountIn input <br/>(Only if fee was provided).                                 |
+
+### Examples
+
+#### Entering Beradrome Farms with BERA
+
+Use BERA (native token) to deposit into a Beradrome farm vault. The endpoint automatically finds the optimal path to convert BERA into the required underlying asset and deposit it.
+
+##### Request:
+
+```bash copy
+curl -X 'GET' \
+  'https://api.enso.finance/api/v1/shortcuts/route/nontokenized?chainId=80094&fromAddress=0xd8da6bf26964af9d7eed9e03e53415d37aa96045&routingStrategy=router&tokenIn=0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee&positionOut=0x0ab1f3949cebb19fdebc5934d1822ea9ca24ae6f&slippage=300&fee=100&feeReceiver=0x220866B1A2219f40e72f5c628B65D54268cA3A9D&amountIn=1000000000000000000&receiver=0xd8da6bf26964af9d7eed9e03e53415d37aa96045&spender=0xd8da6bf26964af9d7eed9e03e53415d37aa96045' \
+  -H 'accept: application/json' \
+  -H 'Authorization: Bearer 1e02632d-6feb-4a75-a157-documentation'
+```
+
+#### Response
+
+```json
+{
+  "amountOut": "655655411412327990",
+  "gas": "934275",
+  "route": [
+    {
+      "action": "swap",
+      "protocol": "enso",
+      "tokenIn": ["0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"],
+      "tokenOut": ["0xac03caba51e17c86c921e1f6cbfbdc91f8bb2e6b"]
+    },
+    {
+      "action": "deposit",
+      "primary": "0x0ab1f3949cebb19fdebc5934d1822ea9ca24ae6f",
+      "protocol": "beradrome-farms",
+      "tokenIn": ["0xac03caba51e17c86c921e1f6cbfbdc91f8bb2e6b"],
+      "tokenOut": ["0x0ab1f3949cebb19fdebc5934d1822ea9ca24ae6f"]
+    }
+  ],
+  "feeAmount": ["10000000000000000"],
+  "tx": {
+    "data": "0x...",
+    "to": "0x80EbA3855878739F4710233A8a19d89Bdd2ffB8E",
+    "from": "0xd8da6bf26964af9d7eed9e03e53415d37aa96045",
+    "value": "1000000000000000000"
+  }
+}
+```

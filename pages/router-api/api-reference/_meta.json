@@ -1,5 +1,6 @@
 {
   "overview": "Overview",
   "route": "GET /v1/shortcuts/route",
-  "quote": "GET /v1/shortcuts/quote"
+  "quote": "GET /v1/shortcuts/quote",
+  "nontokenized": "GET /v1/shortcuts/route/nontokenized"
 }
